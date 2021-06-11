@@ -30,7 +30,7 @@ class BERTTrainer:
         :param train_dataloader: train dataset data loader
         :param test_dataloader: test dataset data loader [can be None]
         :param lr: learning rate of optimizer
-        :param betas: Adam optimizer betas
+        :param betas: Adam optimizer betas, (beta1, beta2)
         :param weight_decay: Adam optimizer weight decay param
         :param with_cuda: traning with cuda
         :param log_freq: logging frequency of the batch iteration
