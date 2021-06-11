@@ -39,7 +39,7 @@ class NextSentencePrediction(nn.Module):
         self.softmax = nn.LogSoftmax(dim=-1)
 
     def forward(self, x):
-        return self.softmax(self.linear(x[:, 0]))   # \ref page 4, using the first token for classification task
+        return self.softmax(self.linear(x[:, 0]))   # \ref page 4, using the first token for classification task, <batch_size, 2>
 
 
 class MaskedLanguageModel(nn.Module):
