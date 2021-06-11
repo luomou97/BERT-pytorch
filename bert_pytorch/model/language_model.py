@@ -17,8 +17,8 @@ class BERTLM(nn.Module):
 
         super().__init__()
         self.bert = bert
-        self.next_sentence = NextSentencePrediction(self.bert.hidden)
-        self.mask_lm = MaskedLanguageModel(self.bert.hidden, vocab_size)
+        self.next_sentence = NextSentencePrediction(self.bert.hidden)       # next sentence prediction task
+        self.mask_lm = MaskedLanguageModel(self.bert.hidden, vocab_size)    # next sentence prediction task
 
     def forward(self, x, segment_label):
         x = self.bert(x, segment_label)
@@ -39,7 +39,7 @@ class NextSentencePrediction(nn.Module):
         self.softmax = nn.LogSoftmax(dim=-1)
 
     def forward(self, x):
-        return self.softmax(self.linear(x[:, 0]))
+        return self.softmax(self.linear(x[:, 0]))   # \ref page 4, using the first token for classification task
 
 
 class MaskedLanguageModel(nn.Module):
