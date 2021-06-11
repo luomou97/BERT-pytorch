@@ -4,6 +4,9 @@ import math
 
 
 class PositionalEmbedding(nn.Module):
+    '''
+    here using fiexed positional embedding, \ref Transformer
+    '''
 
     def __init__(self, d_model, max_len=512):
         super().__init__()
