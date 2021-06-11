@@ -8,6 +8,11 @@ class MultiHeadedAttention(nn.Module):
     """
 
     def __init__(self, h, d_model, dropout=0.1):
+        '''
+        ARGS
+        : h: number of heads
+        : d_model: dimension of model, d_model = d_(Q/K/V) * h
+        '''
         super().__init__()
         assert d_model % h == 0
 
