@@ -38,7 +38,7 @@ def train():
     args = parser.parse_args()
 
     print("Loading Vocab", args.vocab_path)
-    vocab = WordVocab.load_vocab(args.vocab_path)
+    vocab = WordVocab.load_vocab(args.vocab_path)   # pickle.load
     print("Vocab Size: ", len(vocab))
 
     print("Loading Train Dataset", args.train_dataset)
