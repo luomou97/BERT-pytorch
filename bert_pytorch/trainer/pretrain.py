@@ -105,7 +105,8 @@ class BERTTrainer:
             next_loss = self.criterion(next_sent_output, data["is_next"])
 
             # 2-2. NLLLoss of predicting masked token word
-            mask_loss = self.criterion(mask_lm_output.transpose(1, 2), data["bert_label"])
+            mask_loss = self.criterion(mask_lm_output.transpose(1, 2), data["bert_label"])  # NLLLoss input, <batch_size, n(, d_1, d_2, ..., d_K)> 
+                                                                                            # also can view(-1, vocab_size), then NLLLoss
 
             # 2-3. Adding next_loss and mask_loss : 3.4 Pre-training Procedure
             loss = next_loss + mask_loss
