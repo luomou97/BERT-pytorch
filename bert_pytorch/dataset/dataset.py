@@ -6,6 +6,14 @@ import random
 
 class BERTDataset(Dataset):
     def __init__(self, corpus_path, vocab, seq_len, encoding="utf-8", corpus_lines=None, on_memory=True):
+        '''
+        ARGS:
+        : corpus_path: corpus path
+        : vocab: vocabulary
+        : seq_len: maximum lenghth of sentence (maximum word numbers)
+        : corpus_lines: number of corpus lines
+        : on_memory: flag indicates whether hold lines on memory (using list rather than iterator)
+        '''
         self.vocab = vocab
         self.seq_len = seq_len
 
@@ -35,9 +43,9 @@ class BERTDataset(Dataset):
         return self.corpus_lines
 
     def __getitem__(self, item):
-        t1, t2, is_next_label = self.random_sent(item)
-        t1_random, t1_label = self.random_word(t1)
-        t2_random, t2_label = self.random_word(t2)
+        t1, t2, is_next_label = self.random_sent(item)  # get sentence-pair, 50% positive, 50% negative
+        t1_random, t1_label = self.random_word(t1)      # randomly mask sent1, (masked_seq_idx, masking_token_idx)
+        t2_random, t2_label = self.random_word(t2)      # randomly mask sent2, (masked_seq_idx, masking_token_idx)
 
         # [CLS] tag = SOS tag, [SEP] tag = EOS tag
         t1 = [self.vocab.sos_index] + t1_random + [self.vocab.eos_index]
@@ -61,8 +69,8 @@ class BERTDataset(Dataset):
         return {key: torch.tensor(value) for key, value in output.items()}
 
     def random_word(self, sentence):
-        tokens = sentence.split()
-        output_label = []
+        tokens = sentence.split()   # translate words into idx with masked, randomly replaced
+        output_label = []   # record masking token idx
 
         for i, token in enumerate(tokens):
             prob = random.random()
@@ -79,12 +87,12 @@ class BERTDataset(Dataset):
 
                 # 10% randomly change token to current token
                 else:
-                    tokens[i] = self.vocab.stoi.get(token, self.vocab.unk_index)
+                    tokens[i] = self.vocab.stoi.get(token, self.vocab.unk_index)        # if current token not in vocabulary, use UNK instead
 
-                output_label.append(self.vocab.stoi.get(token, self.vocab.unk_index))
+                output_label.append(self.vocab.stoi.get(token, self.vocab.unk_index))   # record the masking token idx
 
             else:
-                tokens[i] = self.vocab.stoi.get(token, self.vocab.unk_index)
+                tokens[i] = self.vocab.stoi.get(token, self.vocab.unk_index)            # if current token not in vocabulary, use UNK instead
                 output_label.append(0)
 
         return tokens, output_label
