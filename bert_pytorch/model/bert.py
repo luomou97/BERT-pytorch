@@ -34,9 +34,9 @@ class BERT(nn.Module):
             [TransformerBlock(hidden, attn_heads, hidden * 4, dropout) for _ in range(n_layers)])
 
     def forward(self, x, segment_info):
-        # attention masking for padded token
+        
         # torch.ByteTensor([batch_size, 1, seq_len, seq_len)
-        mask = (x > 0).unsqueeze(1).repeat(1, x.size(1), 1).unsqueeze(1)
+        mask = (x > 0).unsqueeze(1).repeat(1, x.size(1), 1).unsqueeze(1)    # attention masking for padded token
 
         # embedding the indexed sequence to sequence of vectors
         x = self.embedding(x, segment_info)
