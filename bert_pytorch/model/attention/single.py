@@ -15,7 +15,7 @@ class Attention(nn.Module):
                  / math.sqrt(query.size(-1))    # matmul(<batch_size, len_(Q/K), d_(Q/V)>, <batch_size, d_(Q/V), len_(Q/K)>) => <batch_size, len_(Q/K), len_(Q/K)>
 
         if mask is not None:
-            scores = scores.masked_fill(mask == 0, -1e9)    # replace masked position with -∞, then softmax value similar to 0 \ref Transformer
+            scores = scores.masked_fill(mask == 0, -1e9)    # replace padding position(only using the actual sequence) with -∞, then softmax value similar to 0 \ref Transformer
 
         p_attn = F.softmax(scores, dim=-1)
 
